@@ -1,8 +1,10 @@
 <script id="MathJax-script">
 	import { onMount, afterUpdate } from 'svelte'
 
-	let st = `{`
-	let en = `}`
+	function tex(string) {
+		string = `{` + string + `}`
+		return string
+	}
 
 	function redrawMath() {
 		let script = document.createElement('script')
@@ -27,24 +29,29 @@
 </script>
 
 <style>
+	article {
+		max-width: 40rem;
+	}
+
 	h1 {
 		line-height: 1.5;
 		padding: 1.5rem 0 0 0;
+		margin-bottom: 3rem;
 		width: 100%;
 		text-align: center;
+	}
+	
+	p {
+		margin: 1rem 0;
 	}
 </style>
 
 <svelte:head>
-	<title>Math notes</title>
+	<title>LaTeX editor</title>
 </svelte:head>
 
-<h1>Math notes</h1>
+<h1>LaTeX editor</h1>
 
-<p>
-	Inline math: \( \int f(t)dt \)
-	</p>
-<p>
-	Outline math:
-	$$\int f(t)dt$$
-</p>
+<article contenteditable="true">
+Test
+</article>

@@ -5,11 +5,12 @@
 	a {
 		font-size: 20px;
 		font-weight: 400;
-		transition: color 0.2s ease-in-out;
+		transition: opacity 0.2s ease-in-out;
+		opacity: 0.65;
 	}
 
 	a:hover {
-		color: #0f0;
+		opacity: 1;
 	}
 
 	nav {

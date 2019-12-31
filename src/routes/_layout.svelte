@@ -1,19 +1,25 @@
 <script>
-import Navbar from '../components/Nav.svelte'
+	import Navbar from '../components/Nav.svelte'
+	import { onMount } from 'svelte'
 
-let darkMode = false
+	let darkMode = false
 
-function toggleDarkMode() {
-	var element = document.getElementById("body")
-	
-	if (darkMode) {
-		element.classList.remove("dark-mode")
-	} else {
-		element.classList.add("dark-mode")
+	function toggleDarkMode() {
+		var element = document.getElementById("body")
+		
+		if (darkMode) {
+			element.classList.remove("dark-mode")
+		} else {
+			element.classList.add("dark-mode")
+		}
+
+		darkMode = !darkMode
 	}
 
-	darkMode = !darkMode
-}
+	onMount(() => {
+		darkMode = !darkMode
+		toggleDarkMode()
+	})
 </script>
 
 <style>
@@ -40,8 +46,6 @@ function toggleDarkMode() {
 <button class="toggle-theme" on:click={toggleDarkMode}>
 Toggle theme
 </button>
-
-<Navbar />
 
 <main>
 	<slot></slot>
