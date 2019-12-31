@@ -1,6 +1,9 @@
 <script id="MathJax-script">
 	import { onMount, afterUpdate } from 'svelte'
 
+	let st = `{`
+	let en = `}`
+
 	function redrawMath() {
 		let script = document.createElement('script')
     	script.src = "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"
@@ -21,7 +24,6 @@
 	afterUpdate(() => {
 		redrawMath()
 	})
-	
 </script>
 
 <style>
@@ -39,4 +41,10 @@
 
 <h1>Math notes</h1>
 
-<p>$$x = y$$</p>
+<p>
+	Inline math: \( \int f(t)dt \)
+	</p>
+<p>
+	Outline math:
+	$$\int f(t)dt$$
+</p>
