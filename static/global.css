@@ -12,12 +12,17 @@ html {
 ::-moz-focus-inner {border:0;}
 
 body {
-	font-family: 'Roboto', sans-serif, Roboto, 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', Oxygen, Ubuntu, Cantarell, 'Helvetica Neue';
+	font-family: 'Roboto', sans-serif, -apple-system, BlinkMacSystemFont, 'Segoe UI', Oxygen, Ubuntu, Cantarell, 'Helvetica Neue';
 	font-size: 20px;
 	line-height: 1.8;
-	color: #404e5b;
-	background: #fcfcfc;
+	color: #fcfcfc;
+	background: #393939;
 	-webkit-scroll-behavior: smooth;
 	scroll-behavior: smooth;
 	max-width: 100vw;
+}
+
+h1 {
+	font-weight: 100;
+	font-size: 3rem;
 }
