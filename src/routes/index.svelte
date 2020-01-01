@@ -50,10 +50,6 @@
 		flex-flow: column;
 		align-items: center;
 	}
-
-	p {
-		color: #393939;
-	}
 </style>
 
 <svelte:head>
