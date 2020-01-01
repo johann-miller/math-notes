@@ -1,31 +1,35 @@
 <script id="MathJax-script">
 	import { onMount, afterUpdate } from 'svelte'
 
-	function tex(string) {
-		string = `{` + string + `}`
-		return string
-	}
+	let input = ''
 
 	function redrawMath() {
-		let script = document.createElement('script')
-    	script.src = "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"
-    	document.head.append(script)
-		
-		script.onload = () => {
-			MathJax = {
-				tex: {inlineMath: [['$', '$'], ['\\(', '\\)']]},
-				svg: {fontCache: 'global'}
-			}
+	}
+
+	function updateOutput() {
+		document.getElementById("output").innerHTML = input
+
+		if (window.MathJax) {
+		window.MathJax.Hub.Config({
+			tex2jax: {
+				inlineMath: [['$', '$'], ['(', ')']],
+				displayMath: [['$$', '$$'], ['[', ']']],
+				processEscapes: true,
+				processEnvironments: true
+			},
+			displayAlign: 'center',
+			'HTML-CSS': {
+				styles: { '.MathJax_Display': { margin: 0 } },
+				linebreaks: { automatic: true }
+          },
+		})
+		window.MathJax.Hub.Queue([
+			'Typeset',
+			window.MathJax.Hub,
+			'output'
+		])
 		}
 	}
-	
-	onMount(() => {
-		redrawMath()
-	})
-
-	afterUpdate(() => {
-		redrawMath()
-	})
 </script>
 
 <style>
@@ -40,9 +44,15 @@
 		width: 100%;
 		text-align: center;
 	}
-	
+
+	.math {
+		display: flex;
+		flex-flow: column;
+		align-items: center;
+	}
+
 	p {
-		margin: 1rem 0;
+		color: #393939;
 	}
 </style>
 
@@ -52,6 +62,12 @@
 
 <h1>LaTeX editor</h1>
 
-<article contenteditable="true">
-Test
+<article>
+	<form class="math" action="" onsubmit="event.preventDefault()">
+		<label for="math-input">Type your LaTeX</label>
+		<input type="text" name="" id="math-input" bind:value={input} on:update={redrawMath}>
+	</form>
+	<button on:click={updateOutput}>Update</button>
+	<p id="output"></p>
+
 </article>
