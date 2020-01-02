@@ -2,13 +2,28 @@
 	import { onMount, afterUpdate } from 'svelte'
 
 	let input = ''
+	let idleInput
 
-	function redrawMath() {
+	function inputChange() {
+		clearTimeout(idleInput)
+		idleInput = setTimeout(updateOutput, 750)
 	}
 
 	function updateOutput() {
 		document.getElementById("output").innerHTML = input
 
+		if (window.MathJax) {
+			window.MathJax.Hub.Queue([
+				'Typeset',
+				window.MathJax.Hub,
+				'output'
+			])
+		}
+
+		console.log('Updated')
+	}
+
+	onMount(() => {
 		if (window.MathJax) {
 		window.MathJax.Hub.Config({
 			tex2jax: {
@@ -23,13 +38,8 @@
 				linebreaks: { automatic: true }
           },
 		})
-		window.MathJax.Hub.Queue([
-			'Typeset',
-			window.MathJax.Hub,
-			'output'
-		])
 		}
-	}
+	})
 </script>
 
 <style>
@@ -39,10 +49,11 @@
 		margin-bottom: 3rem;
 		width: 100%;
 		text-align: center;
+		grid-area: title;
 	}
 
 	.container {
-		min-height: 100vh;
+		height: 100vh;
 		width: 100%;
 		display: flex;
 		flex-flow: column;
@@ -51,47 +62,62 @@
 
 	.editor-container {
 		display: grid;
-		flex-grow: 1;
+		grid-area: editor;
 		grid-template-columns: repeat(2, 1fr);
-		grid-template-rows: auto;
+		grid-template-rows: 1fr;
 		grid-template-areas:
 			"input output";
 		width: 100%;
-		min-height: 100%;
+		height: 100%;
 	}
 
 	.editor-input {
+		border-right: 1px #d6d9dc solid;
+		display: flex;
+		flex-flow: column;
 		grid-area: input;
 	}
 
 	.editor-output {
 		grid-area: output;
-		padding: 1rem;
-	}
-
-	.math {
-		display: flex;
-		flex-flow: column;
-		align-items: center;
-		height: 100%;
 	}
 
 	#math-input {
-		background: inherit;
+		flex-grow: 1;
 		border: none;
-		border-right: 1px #747474 solid;
-		font-family: 'Robot', sans-serif;
+		font-family: 'Roboto', sans-serif;
 		font-size: 18px;
 		color: inherit;
-		padding: 1rem;
-		resize: vertical;
-		height: 100%;
+		resize: none;
 		width: 100%;
+		max-width: 40rem;
+		padding: 1rem;
+		line-height: 1.8;
+	}
+
+	#output {
+		width: 100%;
+		max-width: 40rem;
+		padding: 1rem;
 	}
 
 	.section-area {
+		display: flex;
+		flex-flow: column;
+		align-items: center;
+		line-height: 1.8;
+		font-family: 'Roboto', sans-serif;
+		font-size: 18px;
 		width: 100%;
 		min-height: 100%;
+	}
+
+	.section-title-bar {
+		font-weight: 300;
+		width: 100%;
+		padding: 0 1rem;
+		border-top: 1px #d6d9dc solid;
+		border-bottom: 1px #d6d9dc solid;
 	}
 </style>
 
@@ -100,17 +126,14 @@
 </svelte:head>
 
 <div class="container">
-<h1>LaTeX editor</h1>
-<button on:click={updateOutput}>Update</button>
-<div class="editor-container">
-	<section class="editor-input section-area">
-		<form class="math" action="" onsubmit="event.preventDefault()">
-			<textarea id="math-input" bind:value={input}></textarea>
-		</form>
-	</section>
-	<section class="editor-output section-area" id="output">
-		
-	</section>
+	<div class="editor-container">
+		<section class="editor-input section-area">
+			<div class="section-title-bar">Input</div>
+			<textarea id="math-input" bind:value={input} on:input={inputChange}></textarea>
+		</section>
+		<section class="editor-output section-area">
+			<div class="section-title-bar">Preview</div>
+			<article id="output"></article>
+		</section>
+	</div>
 </div>
-</div>
-
