@@ -14,9 +14,11 @@
 	}
 
 	nav {
+		border-bottom: 1px #d6d9dc solid;
 		display: flex;
 		width: 100%;
-		justify-content: center;
+		justify-content: start;
+		height: 3rem;
 	}
 
 	ul {
@@ -25,6 +27,7 @@
 		justify-content: start;
 		list-style-type: none;
 		max-width: 60rem;
+		margin-left: 3rem;
 		width: 100%;
 	}
 
@@ -36,7 +39,6 @@
 <nav>
 	<ul>
 		<li class="home-link"><a href="/">Home</a></li>
-		<li><a href="/">Courses</a></li>
-		<li><a href="/">About</a></li>
+		<li><a href="/editor">Editor</a></li>
 	</ul>
 </nav>

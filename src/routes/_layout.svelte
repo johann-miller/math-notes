@@ -3,11 +3,10 @@
 </script>
 
 <style>
-	main {
-		max-height: 100vh;
-	}
+	
 </style>
 
+<Navbar />
 <main>
 	<slot></slot>
 </main>
