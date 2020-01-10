@@ -14,7 +14,6 @@
 	}
 
 	nav {
-		border-bottom: 1px #d6d9dc solid;
 		display: flex;
 		width: 100%;
 		justify-content: start;
@@ -39,6 +38,7 @@
 <nav>
 	<ul>
 		<li class="home-link"><a href="/">Home</a></li>
-		<li><a href="/editor">Editor</a></li>
+		<li><a href="/about">About</a></li>
+		<li><a href="/contact">Contact</a></li>
 	</ul>
 </nav>
