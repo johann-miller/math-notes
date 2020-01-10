@@ -26,9 +26,6 @@
 		grid-template-areas:
 			"image title"
 			"image description";
-		box-shadow: 
-			0 0 5px rgba(154,160,185,.05),
-			0 0 15px rgba(166,173,201,.2);
 		padding: 1rem;
 	}
 
