@@ -1,5 +1,14 @@
 <script>
-    
+    let courses = [
+		{name: 'Arithmetic & pre-algebra'},
+		{name: 'Trigonometry'},
+		{name: 'Algebra'},
+		{name: 'Probability'},
+		{name: 'Calculus'},
+		{name: 'Linear algebra'},
+		{name: 'Higher math & logic'},
+		{name: 'Group theory'},
+	]
 </script>
 
 <style>
@@ -14,35 +23,31 @@
 		display: flex;
 		flex-flow: column;
 		align-items: center;
-		margin-top: 2rem;
+		margin: 2rem 0;
 		padding: 1rem;
+	}
+
+	.courses {
+		display: grid;
+		grid-auto-flow: row;
+		grid-gap: 1.5rem;
+		grid-template-columns: repeat(2, auto);
+		list-style-type: none;
+		margin-bottom: 3rem;
 	}
 
 	.course {
-		display: grid;
-		align-items: center;
-		grid-template-columns: 10rem 30rem;
-		grid-template-rows: repeat(2, auto);
-		grid-template-areas:
-			"image title"
-			"image description";
-		padding: 1rem;
+		display: flexbox;
+		flex-flow: column;
+		padding-bottom: 1rem;
+		width: 30rem;
+		max-width: 100%;
+		border-bottom: 1px #d6d9dc solid;
 	}
 
 	.course > img {
-		grid-area: image;
 		width: 100%;
 		height: auto;
-	}
-
-	.course > h2 {
-		grid-area: title;
-		padding-left: 1rem;
-	}
-
-	.course > p {
-		grid-area: description;
-		padding-left: 1rem;
 	}
 
 	.description {
@@ -61,26 +66,26 @@
 </style>
 
 <svelte:head>
-	<title>Sigma notes</title>
+	<title>Johann Miller / Blog</title>
 </svelte:head>
 
 <div class="container">
 	<header>
-		<h1 class="title">Sigma notes</h1>
+		<h1 class="title">Johann Miller / Blog</h1>
 		<p class="description">
-			A blog for free learning material on mathematics
+			A collection of free learning materials on mathematics
 		</p>
 	</header>
 
 	<ul class="courses">
+		{#each courses as course}
 		<li class="course">
-			<img 
-			src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fupload.wikimedia.org%2Fwikipedia%2Fcommons%2Fthumb%2Fa%2Fa3%2FPolynomialdeg3.svg%2F1200px-Polynomialdeg3.svg.png&f=1&nofb=1" 
-			alt="Course-1">
-			<h2>Course 1</h2>
+			<img src="https://via.placeholder.com/800x300.webp?text=Course+image" alt="Course-1">
+			<h2>{course.name}</h2>
 			<p>
-				Description of course 1. Proin vel iaculis purus. Quisque massa nibh, blandit a porttitor vel, condimentum congue augue. Donec. 
+				Description of {course.name}. Proin vel iaculis purus. Quisque massa nibh, blandit a porttitor vel, condimentum congue augue. Donec. 
 			</p>
 		</li>
+		{/each}
 	</ul>
 </div>
