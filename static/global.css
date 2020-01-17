@@ -30,6 +30,11 @@ h1 {
 	font-size: 3rem;
 }
 
+input {
+	border: 1px #d6d9dc solid;
+	padding: 0.5rem;
+}
+
 .MathJax {
 	font-size: 18px;
 }

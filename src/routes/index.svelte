@@ -1,13 +1,7 @@
 <script>
     let courses = [
-		{name: 'Arithmetic & pre-algebra'},
-		{name: 'Trigonometry'},
-		{name: 'Algebra'},
-		{name: 'Probability'},
-		{name: 'Calculus'},
-		{name: 'Linear algebra'},
-		{name: 'Higher math & logic'},
-		{name: 'Group theory'},
+		{name: 'Course 1'},
+		{name: 'Course 2'},
 	]
 </script>
 

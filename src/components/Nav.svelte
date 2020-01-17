@@ -1,4 +1,5 @@
 <script>
+	let signedIn = false
 </script>
 
 <style>
@@ -41,5 +42,6 @@
 		<li><a href="/">About me</a></li>
 		<li><a href="/">YouTube</a></li>
 		<li><a href="/">Contact</a></li>
+		{#if signedIn} <li><a href="/editor">Editor</a></li> {/if}
 	</ul>
 </nav>
