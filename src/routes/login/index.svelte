@@ -1,4 +1,7 @@
 <script>
+    import {currentUser} from "../../store/user.js"
+    import SignOut from "../../components/SignOut.svelte"
+
     let email, password
 
     function login() {
@@ -24,17 +27,27 @@
         flex-flow: column;
         align-items: start;
     }
+
+    .login-button {
+        margin-top: 2rem;
+        align-self: center;
+    }
 </style>
 
 <div class="container">
     <h1>Admin login</h1>
-    <form action="" onsubmit="event.preventDefault()" class="login-form">
-        <label for="email">Email</label>
-        <input type="email" id="email" bind:value="{email}">
-        <label for="password">Password</label>
-        <input type="password" bind:value="{password}">
-        <button type="submit" on:click="{login}">
-            Login
-        </button>
-    </form>
+    {#if ($currentUser == null)}
+        <form action="" onsubmit="event.preventDefault()" class="login-form">
+            <label for="email">Email</label>
+            <input type="email" id="email" bind:value="{email}">
+            <label for="password">Password</label>
+            <input type="password" bind:value="{password}">
+            <button type="submit" on:click="{login}" class="login-button">
+                Login
+            </button>
+        </form>
+    {:else}
+        <span>You are already signed in</span>
+        <SignOut />
+    {/if}
 </div>

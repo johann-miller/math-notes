@@ -1,5 +1,6 @@
 <script>
-	let signedIn = false
+	import {currentUser} from "./../store/user.js"
+	import SignOut from "./SignOut.svelte"
 </script>
 
 <style>
@@ -39,9 +40,8 @@
 <nav>
 	<ul>
 		<li class="home-link"><a href="/">Home</a></li>
-		<li><a href="/">About me</a></li>
-		<li><a href="/">YouTube</a></li>
-		<li><a href="/">Contact</a></li>
-		{#if signedIn} <li><a href="/editor">Editor</a></li> {/if}
+		{#if $currentUser}
+			<SignOut />
+		{/if}
 	</ul>
 </nav>

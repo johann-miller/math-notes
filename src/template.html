@@ -25,6 +25,29 @@
 	%sapper.head%
 </head>
 <body id="body">
+	
+  	<!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
+	<script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-app.js"></script>
+	  
+	<!-- Add Firebase products that you want to use -->
+	<script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-auth.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-firestore.js"></script>  
+	
+	<script>
+	var firebaseConfig = {
+		apiKey: "AIzaSyCIx-t2a2w5API_HbqcCSqqVgh7kHUlhac",
+		authDomain: "mathblog-54ab9.firebaseapp.com",
+		databaseURL: "https://mathblog-54ab9.firebaseio.com",
+		projectId: "mathblog-54ab9",
+		storageBucket: "mathblog-54ab9.appspot.com",
+		messagingSenderId: "628508635218",
+		appId: "1:628508635218:web:b1b44fc1e6050f340b6f8b"
+	}
+	
+	firebase.initializeApp(firebaseConfig);
+	</script>
+
+
 	<!-- The application will be rendered inside this element,
 	     because `src/client.js` references it -->
 	<div id='sapper'>%sapper.html%</div>
