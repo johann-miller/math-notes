@@ -33,15 +33,16 @@
 	}
 
 	li {
-		padding: 0.5rem;
+		margin: 0 0.5rem;
 	}
 </style>
 
 <nav>
 	<ul>
-		<li class="home-link"><a href="/">Home</a></li>
+		<li><a href="/">Home</a></li>
 		{#if $currentUser}
-			<SignOut />
+		<li><a href="/editor">Editor</a></li>
+		<li><SignOut /></li>
 		{/if}
 	</ul>
 </nav>

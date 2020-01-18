@@ -32,6 +32,10 @@
         margin-top: 2rem;
         align-self: center;
     }
+
+    .logged-in-message {
+        margin-bottom: 2rem;
+    }
 </style>
 
 <div class="container">
@@ -47,7 +51,7 @@
             </button>
         </form>
     {:else}
-        <span>You are already signed in</span>
+        <span class="logged-in-message">You are already signed in</span>
         <SignOut />
     {/if}
 </div>
