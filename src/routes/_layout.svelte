@@ -4,7 +4,11 @@
 </script>
 
 <style>
-	
+	main {
+		display: flex;
+		flex-flow: column;
+		align-items: center;
+	}
 </style>
 
 <UserObserver />

@@ -12,7 +12,7 @@
 	<link rel='icon' type='image/png' href='favicon.png'>
 	<link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400&display=swap" rel="stylesheet">
 	<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS_HTML"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_SVG"></script>
 	
 
 	<!-- Sapper generates a <style> tag containing critical CSS
@@ -45,6 +45,13 @@
 	}
 	
 	firebase.initializeApp(firebaseConfig);
+	</script>
+
+	<script type="text/x-mathjax-config">
+		MathJax.Hub.Config({
+			extensions: ["tex2jax.js", "TeX/AMSmath.js"],
+			jax: ["input/TeX", "output/SVG"],
+		})
 	</script>
 
 
