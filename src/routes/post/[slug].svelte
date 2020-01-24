@@ -8,7 +8,7 @@
     // Gets article from database
     onMount(() => {
         db = firebase.firestore()
-        const articleRef = db.collection('articles').doc(slug)
+        const articleRef = db.collection('posts').doc(slug)
 
         articleRef.get().then(function(doc) {
             if(doc.exists) {
@@ -35,9 +35,9 @@
             });
         }
 
-    if (window.MathJax) {
-      window.MathJax.Hub.Queue(["Typeset", window.MathJax.Hub, "article"]);
-    }
+        if (window.MathJax) {
+        window.MathJax.Hub.Queue(["Typeset", window.MathJax.Hub, "post"]);
+        }
     })
 
     function date(timestamp) {
@@ -104,16 +104,26 @@
         height: 100%;
     }
 
+    .video-container-limiter {
+        width: 100%;
+        max-width: 80rem;
+    }
+
 </style>
 
-<article id="article">
+{#if article}
+<div class="video-container-limiter">
+    <div class="video-container">
+        <iframe src="{article.video}" frameborder="0" title="video" class="video"></iframe>
+    </div>
+</div>
+{/if}
+
+<article id="post">
     {#if article}
-        <div class="video-container">
-            <iframe src="{article.video}" frameborder="0" title="video" class="video"></iframe>
-        </div>
         <header>
             <h1>{article.title}</h1>
-            <span class="date">Published {date(article.created.seconds)}</span>
+            <span class="date">Published {date(article.published.seconds)}</span>
             {#if article.edited}
                 <span class="date">Last edited {date(article.edited.seconds)}</span>
             {/if}

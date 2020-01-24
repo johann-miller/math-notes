@@ -47,13 +47,9 @@ input {
 }
 
 .MathJax {
-	font-size: 18px;
+	font-size: 16px;
 }
 
 article p {
 	margin: 1.5rem 0;
-}
-
-div:where(#MathJax_Font_Test) {
-	min-width: none;
 }
