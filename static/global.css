@@ -20,14 +20,16 @@ body {
 }
 
 button {
+	display: flex;
+	align-items: center;
 	cursor: pointer;
-	border: 1px #3f3e3c solid;
-	border-radius: 0.5rem;
-	background: #3f3e3c;
-	color: #fcfcfc;
+	border: 1px #d6d9dc solid;
+	border-radius: 0.3rem;
+	background: #d6d9dc;
+	color: inherit;
 	font-family: inherit;
 	font-size: inherit;
-	padding: 0.25rem 0.75rem;
+	padding: 0.4rem 0.8rem;
 }
 
 a, a:visited, a:link {

@@ -9,5 +9,9 @@ service cloud.firestore {
     match /users/{user} {
       allow read, write: if false;
     }
+
+    match /courses/{course} {
+      allow read, write: if get(/databases/$(database)/documents/users/$(request.auth.uid)).data.admin == true;
+    }
   }
 }

@@ -1,9 +1,11 @@
 <script id="MathJax-script">
-  import { onMount, afterUpdate } from "svelte";
+  import { onMount, afterUpdate } from "svelte"
+  import SectionSelect from "../../components/SectionSelect.svelte"
 
-  let input = "";
-  let idleInput;
-
+  let sectionSelected = false
+  let input = ""
+  let idleInput
+  
   function inputChange() {
     clearTimeout(idleInput);
     idleInput = setTimeout(updateOutput, 750);
@@ -101,22 +103,30 @@
     width: 100%;
     padding: 0 1rem;
     border-bottom: 1px #d6d9dc solid;
+    border-top: 1px #d6d9dc solid;
   }
+
+  
 </style>
 
 <svelte:head>
   <title>LaTeX editor</title>
 </svelte:head>
 
-<div class="container">
-  <div class="editor-container">
-    <section class="editor-input section-area">
-      <div class="section-title-bar">Input</div>
-      <textarea id="math-input" bind:value={input} on:input={inputChange} />
-    </section>
-    <section class="editor-output section-area">
-      <div class="section-title-bar">Preview</div>
-      <article id="output" />
-    </section>
+
+{#if sectionSelected}
+  <div class="container">
+    <div class="editor-container">
+      <section class="editor-input section-area">
+        <div class="section-title-bar">Input</div>
+        <textarea id="math-input" bind:value={input} on:input={inputChange} />
+      </section>
+      <section class="editor-output section-area">
+        <div class="section-title-bar">Preview</div>
+        <article id="output" />
+      </section>
+    </div>
   </div>
-</div>
+{:else}
+  <SectionSelect />
+{/if}
