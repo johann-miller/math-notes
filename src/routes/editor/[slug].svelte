@@ -44,19 +44,19 @@
 
     onMount(() => {
         if (window.MathJax) {
-        window.MathJax.Hub.Config({
-            tex2jax: {
-            inlineMath: [["$", "$"], ["(", ")"]],
-            displayMath: [["$$", "$$"], ["[", "]"]],
-            processEscapes: true,
-            processEnvironments: true
-            },
-            displayAlign: "center",
-            "HTML-CSS": {
-            styles: { ".MathJax_Display": { margin: 0 } },
-            linebreaks: { automatic: true }
-            }
-        });
+            window.MathJax.Hub.Config({
+                tex2jax: {
+                    inlineMath: [["$", "$"], ["(", ")"]],
+                    displayMath: [["$$", "$$"], ["[", "]"]],
+                    processEscapes: true,
+                    processEnvironments: true
+                },
+                displayAlign: "center",
+                "HTML-CSS": {
+                    styles: { ".MathJax_Display": { margin: 0 } },
+                    linebreaks: { automatic: true }
+                }
+            });
         }
 
         selectSection(slug)
