@@ -1,132 +1,135 @@
-<script id="MathJax-script">
-  import { onMount, afterUpdate } from "svelte"
-  import SectionSelect from "../../components/SectionSelect.svelte"
+<script>
+    import { goto } from '@sapper/app'
+    import { onMount, createEventDispatcher } from 'svelte'
+    const dispatch = createEventDispatcher()
 
-  let sectionSelected = false
-  let input = ""
-  let idleInput
-  
-  function inputChange() {
-    clearTimeout(idleInput);
-    idleInput = setTimeout(updateOutput, 750);
-  }
+    let selectedCourse, selectedChapter, chapters, sections
+    let courses = []
 
-  function updateOutput() {
-    document.getElementById("output").innerHTML = input;
+    onMount(() => {
+        let db = firebase.firestore()
 
-    if (window.MathJax) {
-      window.MathJax.Hub.Queue(["Typeset", window.MathJax.Hub, "output"]);
+        db.collection("courses").get().then(querySnapshot => {
+            querySnapshot.forEach(doc => {
+                courses.push(doc.data())
+            })
+            courses = courses
+        })
+    })
+
+    function selectCourse(course) {
+        selectedCourse = course
+        let result = courses.find(object => object.title == course)
+
+        chapters = result.chapters
+        selectedChapter = chapters[0]
+        sections = chapters[0].sections
     }
-  }
 
-  onMount(() => {
-    if (window.MathJax) {
-      window.MathJax.Hub.Config({
-        tex2jax: {
-          inlineMath: [["$", "$"], ["(", ")"]],
-          displayMath: [["$$", "$$"], ["[", "]"]],
-          processEscapes: true,
-          processEnvironments: true
-        },
-        displayAlign: "center",
-        "HTML-CSS": {
-          styles: { ".MathJax_Display": { margin: 0 } },
-          linebreaks: { automatic: true }
-        }
-      });
+    function selectChapter(chapter) {
+        selectedChapter = chapter
+        let result = chapters.find(object => object.title == chapter)
+
+        sections = result.sections
     }
-  });
+
+    function selectSection(section) {
+        goto(`/editor/${section.postID}`)
+    }
 </script>
 
 <style>
-  .container {
-    height: calc(100vh - 3rem);
-    width: 100%;
-    display: flex;
-    flex-flow: column;
-    align-items: center;
-  }
+    .index {
+        margin-right: 1rem;
+    }
 
-  .editor-container {
-    display: grid;
-    grid-area: editor;
-    grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: 1fr;
-    grid-template-areas: "input output";
-    width: 100%;
-    height: 100%;
-  }
+    .selection-button {
+        background: none;
+        color: inherit;
+        border: none;
+        width: 100%;
+    }
 
-  .editor-input {
-    border-right: 1px #d6d9dc solid;
-    display: flex;
-    flex-flow: column;
-    grid-area: input;
-  }
+    .selection-container {
+        display: flex;
+        align-items: start;
+        margin-top: 3rem;
+    }
 
-  .editor-output {
-    grid-area: output;
-  }
+    .list-section {
+        display: flex;
+        flex-flow: column;
+        align-items: flex-start;
+        width: 20rem;
+        margin: 0.25rem;
+        padding: 0 1rem;
+        border-left: 1px #d6d9dc solid;
+    }
 
-  #math-input {
-    flex-grow: 1;
-    border: none;
-    font-family: "Roboto", sans-serif;
-    font-size: 18px;
-    color: inherit;
-    resize: none;
-    width: 100%;
-    max-width: 40rem;
-    padding: 1rem;
-    line-height: 1.8;
-  }
+    .new-button {
+        background: none;
+    }
 
-  #output {
-    width: 100%;
-    max-width: 40rem;
-    padding: 1rem;
-  }
+    .selected {
+        background: #d6d9dc;
+    }
 
-  .section-area {
-    display: flex;
-    flex-flow: column;
-    align-items: center;
-    line-height: 1.8;
-    font-family: "Roboto", sans-serif;
-    font-size: 18px;
-    width: 100%;
-    min-height: 100%;
-  }
+    .selection-list {
+        list-style-type: none;
+        width: 100%;
+    }
 
-  .section-title-bar {
-    font-weight: 300;
-    width: 100%;
-    padding: 0 1rem;
-    border-bottom: 1px #d6d9dc solid;
-    border-top: 1px #d6d9dc solid;
-  }
+    .selection-list > li {
+        padding: 0.75rem 0;
+        margin: 0.25rem 0;
+        width: 100%;
+    }
 
-  
+    .title {
+        margin-top: 3rem;
+    }
 </style>
 
-<svelte:head>
-  <title>LaTeX editor</title>
-</svelte:head>
-
-
-{#if sectionSelected}
-  <div class="container">
-    <div class="editor-container">
-      <section class="editor-input section-area">
-        <div class="section-title-bar">Input</div>
-        <textarea id="math-input" bind:value={input} on:input={inputChange} />
-      </section>
-      <section class="editor-output section-area">
-        <div class="section-title-bar">Preview</div>
-        <article id="output" />
-      </section>
-    </div>
-  </div>
-{:else}
-  <SectionSelect />
-{/if}
+<h1 class="title">Select a section to edit</h1>
+<div class="selection-container">
+    <section class="courses list-section">
+        <button class="new-button">New course</button>
+        <ul class="selection-list">
+        {#each courses as course}
+            <li>
+            <button class="selection-button" on:click="{() => selectCourse(course.title)}" class:selected="{course.title == selectedCourse}">
+                {course.title}
+            </button>
+            </li>
+        {/each}
+        </ul>
+    </section>
+    <section class="chapters list-section">
+        {#if chapters}
+        <button class="new-button">New chapter</button>
+            <ul class="selection-list" type="1">
+                {#each chapters as chapter, index}
+                    <li>
+                        <button class="selection-button" on:click="{() => selectChapter(chapter.title)}" class:selected="{chapter.title == selectedChapter}">
+                            <span class="index">{index + 1}</span>{chapter.title}
+                        </button>
+                    </li>
+                {/each}
+            </ul>
+        {/if}
+    </section>
+    <section class="sections list-section">
+        {#if sections}
+            <button class="new-button">New section</button>
+            <ul class="selection-list" type="1">
+                {#each sections as section, index}
+                <li>
+                    <button class="selection-button" on:click="{() => selectSection(section)}">
+                        <span class="index">{index + 1}</span>{section.title}
+                    </button>
+                </li>
+                {/each}
+            </ul>
+        {/if}
+    </section>
+</div>

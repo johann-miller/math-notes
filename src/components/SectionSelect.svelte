@@ -1,53 +1,9 @@
 <script>
-    import { onMount } from "svelte"
+    import { onMount, createEventDispatcher } from "svelte"
+    const dispatch = createEventDispatcher()
 
     let selectedCourse, selectedChapter, chapters, sections
     let courses = []
-    // let courses = [
-    //     {
-    //     title: "Algebra",
-    //     chapters: [
-    //         {
-    //         title: "Groups",
-    //         index: 1,
-    //         sections: [
-    //             {title: "The dihedral groups", index: 1},
-    //             {title: "Quotient groups", index: 2}
-    //         ]
-    //         },
-    //         {
-    //         title: "Rings",
-    //         index: 2,
-    //         sections: [
-    //             {title: "Universal properties", index: 1},
-    //             {title: "Products of rings", index: 2}
-    //         ]
-    //         }
-    //     ]
-    //     },
-    //     {
-    //     title: "Analysis",
-    //     chapters: [
-    //         {
-    //         title: "The limit",
-    //         index: 1,
-    //         sections: [
-    //             {title: "Sequences", index: 1},
-    //             {title: "Functions", index: 2}
-    //         ]
-    //         },
-    //         {
-    //         title: "Topology",
-    //         index: 2,
-    //         sections: [
-    //             {title: "Axioms", index: 1},
-    //             {title: "Metric spaces", index: 2},
-    //             {title: "Continuous functions", index: 3}
-    //         ]
-    //         }
-    //     ]
-    //     }
-    // ]
 
     onMount(() => {
         let db = firebase.firestore()
@@ -55,9 +11,8 @@
         db.collection("courses").get().then(querySnapshot => {
             querySnapshot.forEach(doc => {
                 courses.push(doc.data())
-                console.log(courses)
-                courses = courses
             })
+            courses = courses
         })
     })
 
@@ -76,6 +31,10 @@
 
         sections = result.sections
     }
+
+    function selectSection(section) {
+        dispatch('event', section.postSlug)
+    }
 </script>
 
 <style>
@@ -87,6 +46,7 @@
         background: none;
         color: inherit;
         border: none;
+        width: 100%;
     }
 
     .selection-container {
@@ -96,23 +56,32 @@
     }
 
     .list-section {
+        display: flex;
+        flex-flow: column;
+        align-items: flex-start;
         width: 20rem;
         margin: 0.25rem;
+        padding: 0 1rem;
         border-left: 1px #d6d9dc solid;
     }
 
+    .new-button {
+        background: none;
+    }
+
     .selected {
-        border: 1px red dotted;
+        background: #d6d9dc;
     }
 
     .selection-list {
         list-style-type: none;
-        margin-left: 1rem;
+        width: 100%;
     }
 
     .selection-list > li {
         padding: 0.75rem 0;
         margin: 0.25rem 0;
+        width: 100%;
     }
 
     .title {
@@ -122,40 +91,44 @@
 
 <h1 class="title">Select a section to edit</h1>
 <div class="selection-container">
-<section class="courses list-section">
-    <ul class="selection-list">
-    <li><button>New course</button></li>
-    {#each courses as course}
-        <li>
-        <button class="selection-button" on:click="{() => selectCourse(course.title)}" class:selected="{course.title == selectedCourse}">
-            {course.title}
-        </button>
-        </li>
-    {/each}
-    </ul>
-</section>
-<section class="chapters list-section">
-    <ol class="selection-list" type="1">
-    {#if chapters}
-        <li><button>New chapter</button></li>
-        {#each chapters as chapter, index}
-        <li>
-            <button class="selection-button" on:click="{() => selectChapter(chapter.title)}" class:selected="{chapter.title == selectedChapter}">
-            <span class="index">{index + 1}</span>{chapter.title}
+    <section class="courses list-section">
+        <button class="new-button">New course</button>
+        <ul class="selection-list">
+        {#each courses as course}
+            <li>
+            <button class="selection-button" on:click="{() => selectCourse(course.title)}" class:selected="{course.title == selectedCourse}">
+                {course.title}
             </button>
-        </li>
+            </li>
         {/each}
-    {/if}
-    </ol>
-</section>
-<section class="sections list-section">
-    <ul class="selection-list" type="1">
-    {#if sections}
-        <li><button>New section</button></li>
-        {#each sections as section, index}
-        <li><button class="selection-button"><span class="index">{index + 1}</span>{section.title}</button></li>
-        {/each}
-    {/if}
-    </ul>
-</section>
+        </ul>
+    </section>
+    <section class="chapters list-section">
+        {#if chapters}
+        <button class="new-button">New chapter</button>
+            <ul class="selection-list" type="1">
+                {#each chapters as chapter, index}
+                    <li>
+                        <button class="selection-button" on:click="{() => selectChapter(chapter.title)}" class:selected="{chapter.title == selectedChapter}">
+                            <span class="index">{index + 1}</span>{chapter.title}
+                        </button>
+                    </li>
+                {/each}
+            </ul>
+        {/if}
+    </section>
+    <section class="sections list-section">
+        {#if sections}
+            <button class="new-button">New section</button>
+            <ul class="selection-list" type="1">
+                {#each sections as section, index}
+                <li>
+                    <button class="selection-button" on:click="{() => selectSection(section)}">
+                        <span class="index">{index + 1}</span>{section.title}
+                    </button>
+                </li>
+                {/each}
+            </ul>
+        {/if}
+    </section>
 </div>

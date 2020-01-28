@@ -123,7 +123,7 @@
     {#if article}
         <header>
             <h1>{article.title}</h1>
-            <span class="date">Published {date(article.published.seconds)}</span>
+            <span class="date">{date(article.published.seconds)}</span>
             {#if article.edited}
                 <span class="date">Last edited {date(article.edited.seconds)}</span>
             {/if}
