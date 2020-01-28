@@ -1,7 +1,6 @@
 <script id="MathJax-script">
     import { stores } from "@sapper/app"
     import { onMount, afterUpdate } from "svelte"
-    import SectionSelect from "../../components/SectionSelect.svelte"
 
     const { page } = stores()
     const { slug } = $page.params

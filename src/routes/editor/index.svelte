@@ -1,10 +1,12 @@
 <script>
     import { goto } from '@sapper/app'
     import { onMount, createEventDispatcher } from 'svelte'
+    import CreatingCard from '../../components/CreatingCard.svelte'
     const dispatch = createEventDispatcher()
 
-    let selectedCourse, selectedChapter, chapters, sections
+    let selectedCourse, selectedChapter, chapters, sections, type
     let courses = []
+    let creating = false
 
     onMount(() => {
         let db = firebase.firestore()
@@ -36,6 +38,11 @@
     function selectSection(section) {
         goto(`/editor/${section.postID}`)
     }
+
+    function newContent(input) {
+        type = input
+        creating = true
+    }
 </script>
 
 <style>
@@ -66,10 +73,6 @@
         border-left: 1px #d6d9dc solid;
     }
 
-    .new-button {
-        background: none;
-    }
-
     .selected {
         background: #d6d9dc;
     }
@@ -93,20 +96,20 @@
 <h1 class="title">Select a section to edit</h1>
 <div class="selection-container">
     <section class="courses list-section">
-        <button class="new-button">New course</button>
+        <button class="new-button" on:click="{() => newContent('course')}">New course</button>
         <ul class="selection-list">
-        {#each courses as course}
-            <li>
-            <button class="selection-button" on:click="{() => selectCourse(course.title)}" class:selected="{course.title == selectedCourse}">
-                {course.title}
-            </button>
-            </li>
-        {/each}
+            {#each courses as course}
+                <li>
+                <button class="selection-button" on:click="{() => selectCourse(course.title)}" class:selected="{course.title == selectedCourse}">
+                    {course.title}
+                </button>
+                </li>
+            {/each}
         </ul>
     </section>
     <section class="chapters list-section">
         {#if chapters}
-        <button class="new-button">New chapter</button>
+        <button class="new-button" on:click="{() => newContent('chapter')}">New chapter</button>
             <ul class="selection-list" type="1">
                 {#each chapters as chapter, index}
                     <li>
@@ -120,7 +123,7 @@
     </section>
     <section class="sections list-section">
         {#if sections}
-            <button class="new-button">New section</button>
+            <button class="new-button" on:click="{() => newContent('section')}">New section</button>
             <ul class="selection-list" type="1">
                 {#each sections as section, index}
                 <li>
@@ -133,3 +136,6 @@
         {/if}
     </section>
 </div>
+{#if creating}
+    <CreatingCard on:cancel={() => {creating = false}} type={type} />
+{/if}
