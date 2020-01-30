@@ -9,30 +9,33 @@
     let creating = false
 
     onMount(() => {
+        getCourses()
+    })
+
+    function getCourses() {
         let db = firebase.firestore()
 
         db.collection("courses").get().then(querySnapshot => {
             querySnapshot.forEach(doc => {
-                courses.push(doc.data())
+                courses.push({id: doc.id, content: doc.data()})
             })
             courses = courses
         })
-    })
+    }
 
     function selectCourse(course) {
         selectedCourse = course
-        let result = courses.find(object => object.title == course)
+        let result = courses.find(object => object.content.title == course)
 
-        chapters = result.chapters
+        chapters = result.content.chapters
         selectedChapter = chapters[0]
         sections = chapters[0].sections
     }
 
     function selectChapter(chapter) {
         selectedChapter = chapter
-        let result = chapters.find(object => object.title == chapter)
 
-        sections = result.sections
+        sections = chapters[chapter].sections
     }
 
     function selectSection(section) {
@@ -100,8 +103,8 @@
         <ul class="selection-list">
             {#each courses as course}
                 <li>
-                <button class="selection-button" on:click="{() => selectCourse(course.title)}" class:selected="{course.title == selectedCourse}">
-                    {course.title}
+                <button class="selection-button" on:click="{() => selectCourse(course.content.title)}" class:selected="{course.content.title == selectedCourse}">
+                    {course.content.title}
                 </button>
                 </li>
             {/each}
@@ -113,7 +116,7 @@
             <ul class="selection-list" type="1">
                 {#each chapters as chapter, index}
                     <li>
-                        <button class="selection-button" on:click="{() => selectChapter(chapter.title)}" class:selected="{chapter.title == selectedChapter}">
+                        <button class="selection-button" on:click="{() => selectChapter(index)}" class:selected="{index == selectedChapter}">
                             <span class="index">{index + 1}</span>{chapter.title}
                         </button>
                     </li>
@@ -137,5 +140,10 @@
     </section>
 </div>
 {#if creating}
-    <CreatingCard on:cancel={() => {creating = false}} type={type} />
+    <CreatingCard 
+        on:cancel={() => {creating = false}} 
+        type={type} 
+        selectedCourse={selectedCourse} 
+        selectedChapter={selectedChapter}
+     />
 {/if}

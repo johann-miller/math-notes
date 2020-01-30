@@ -3,10 +3,16 @@
     import { fade } from 'svelte/transition'
 
     export let type = "course"
+    export let selectedCourse, selectedChapter
     const dispatch = createEventDispatcher()
+    let input = ""
 
     function cancel() {
         dispatch('cancel')
+    }
+
+    function create() {
+        console.log({selectedCourse: selectedCourse, selectedChapter: selectedChapter})
     }
 </script>
 
@@ -56,11 +62,11 @@
         <h2 class="title">Create a {type}</h2>
         <form action="" class="creation-form">
             <label for="creating-title">Name</label>
-            <input type="text" id="creating-title">
+            <input type="text" id="creating-title" bind:value="{input}">
         </form>
         <div class="buttons">
             <button class="cancel-button" on:click={cancel}>Cancel</button>
-            <button class="create-button">Create</button>
+            <button class="create-button" on:click={create}>Create</button>
         </div>
     </div>
 </div>
