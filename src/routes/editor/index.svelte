@@ -39,7 +39,8 @@
         if (result.content.chapters) {
             chapters = result.content.chapters
         } else {
-            chapters, sections = []
+            chapters = []
+            sections = []
         }
 
         if (chapters[0]) {
