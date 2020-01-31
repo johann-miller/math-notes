@@ -1,19 +1,67 @@
 <script>
-    import { createEventDispatcher } from 'svelte'
+    import { createEventDispatcher, onMount } from 'svelte'
     import { fade } from 'svelte/transition'
 
     export let type = "course"
-    export let selectedCourse, selectedChapter
+    export let course, chapter
     const dispatch = createEventDispatcher()
     let input = ""
+    let db
 
     function cancel() {
         dispatch('cancel')
     }
 
     function create() {
-        console.log({selectedCourse: selectedCourse, selectedChapter: selectedChapter})
+        let title = input
+        let docRef = db.collection("courses").doc(course)
+        let chapters, sections = []
+
+        switch(type) {
+            case 'course':
+                db.collection("courses").add({
+                    title: title
+                })
+                .then(() => {dispatch('update')})
+                break
+            case 'chapter':
+                docRef.get().then(doc => {
+                    let data = doc.data()
+
+                    if (data.chapters) {
+                        chapters = data.chapters
+                    } 
+
+                    chapters.push({title: title})
+                    
+                    docRef.set({chapters: chapters}, {merge: true}).then(() => {
+                        dispatch('update')
+                    })
+                })
+                break
+            case 'section':
+                docRef.get().then(doc => {
+                    let data = doc.data()
+
+                    chapters = data.chapters
+
+                    if (chapters[chapter].sections) {
+                        sections = chapters[chapter].sections
+                    }
+
+                    sections.push({title: title})
+                    chapters[chapter].sections = sections
+
+                    docRef.set({chapters: chapters}, {merge: true}).then(() => {
+                        dispatch('update')
+                    })
+                })
+        }
     }
+
+    onMount(() => {
+        db = firebase.firestore()
+    })
 </script>
 
 <style>

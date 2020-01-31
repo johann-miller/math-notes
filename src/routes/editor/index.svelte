@@ -14,28 +14,55 @@
 
     function getCourses() {
         let db = firebase.firestore()
+        courses = []
 
         db.collection("courses").get().then(querySnapshot => {
             querySnapshot.forEach(doc => {
                 courses.push({id: doc.id, content: doc.data()})
             })
             courses = courses
+
+            if (selectedCourse) {
+                selectCourse(selectedCourse)
+            }
+
+            if (selectedChapter) {
+                selectChapter(selectedChapter)
+            }
         })
     }
 
     function selectCourse(course) {
         selectedCourse = course
-        let result = courses.find(object => object.content.title == course)
+        let result = courses.find(object => object.id == course)
 
-        chapters = result.content.chapters
-        selectedChapter = chapters[0]
-        sections = chapters[0].sections
+        if (result.content.chapters) {
+            chapters = result.content.chapters
+        } else {
+            chapters, sections = []
+        }
+
+        if (chapters[0]) {
+            if (!selectedChapter) {
+                selectedChapter = 0
+            }
+
+            if (chapters[0].sections) {
+                sections = chapters[0].sections
+            } else {
+                sections = []
+            }
+        }
     }
 
     function selectChapter(chapter) {
         selectedChapter = chapter
 
-        sections = chapters[chapter].sections
+        if (chapters[chapter]) {
+            sections = chapters[chapter].sections
+        } else {
+            sections = []
+        }
     }
 
     function selectSection(section) {
@@ -103,7 +130,7 @@
         <ul class="selection-list">
             {#each courses as course}
                 <li>
-                <button class="selection-button" on:click="{() => selectCourse(course.content.title)}" class:selected="{course.content.title == selectedCourse}">
+                <button class="selection-button" on:click="{() => selectCourse(course.id)}" class:selected="{course.id == selectedCourse}">
                     {course.content.title}
                 </button>
                 </li>
@@ -111,8 +138,10 @@
         </ul>
     </section>
     <section class="chapters list-section">
+        {#if selectedCourse}
+            <button class="new-button" on:click="{() => newContent('chapter')}">New chapter</button>
+        {/if}
         {#if chapters}
-        <button class="new-button" on:click="{() => newContent('chapter')}">New chapter</button>
             <ul class="selection-list" type="1">
                 {#each chapters as chapter, index}
                     <li>
@@ -125,8 +154,10 @@
         {/if}
     </section>
     <section class="sections list-section">
-        {#if sections}
+        {#if (selectedChapter >= 0)}
             <button class="new-button" on:click="{() => newContent('section')}">New section</button>
+        {/if}
+        {#if sections}
             <ul class="selection-list" type="1">
                 {#each sections as section, index}
                 <li>
@@ -141,9 +172,10 @@
 </div>
 {#if creating}
     <CreatingCard 
-        on:cancel={() => {creating = false}} 
+        on:cancel={() => {creating = false}}
+        on:update={() => {creating = false; getCourses()}}
         type={type} 
-        selectedCourse={selectedCourse} 
-        selectedChapter={selectedChapter}
+        course={selectedCourse}
+        chapter={selectedChapter}
      />
 {/if}
