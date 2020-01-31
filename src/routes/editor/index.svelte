@@ -2,6 +2,7 @@
     import { goto } from '@sapper/app'
     import { onMount, createEventDispatcher } from 'svelte'
     import CreatingCard from '../../components/CreatingCard.svelte'
+    import DeleteSection from '../../components/DeleteSection.svelte'
     const dispatch = createEventDispatcher()
 
     let selectedCourse, selectedChapter, chapters, sections, type
@@ -9,10 +10,10 @@
     let creating = false
 
     onMount(() => {
-        getCourses()
+        updateCourses()
     })
 
-    function getCourses() {
+    function updateCourses() {
         let db = firebase.firestore()
         courses = []
 
@@ -114,6 +115,7 @@
     }
 
     .selection-list > li {
+        display: flex;
         padding: 0.75rem 0;
         margin: 0.25rem 0;
         width: 100%;
@@ -134,6 +136,7 @@
                 <button class="selection-button" on:click="{() => selectCourse(course.id)}" class:selected="{course.id == selectedCourse}">
                     {course.content.title}
                 </button>
+                <DeleteSection type='course' course={course.id} on:update={() => {updateCourses()}} />
                 </li>
             {/each}
         </ul>
@@ -174,7 +177,7 @@
 {#if creating}
     <CreatingCard 
         on:cancel={() => {creating = false}}
-        on:update={() => {creating = false; getCourses()}}
+        on:update={() => {creating = false; updateCourses()}}
         type={type} 
         course={selectedCourse}
         chapter={selectedChapter}

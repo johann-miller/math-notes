@@ -14,7 +14,7 @@
 
     function create() {
         let title = input
-        let docRef = db.collection("courses").doc(course)
+        let docRef
         let chapters, sections = []
 
         switch(type) {
@@ -25,11 +25,14 @@
                 .then(() => {dispatch('update')})
                 break
             case 'chapter':
+                docRef = db.collection("courses").doc(course)
                 docRef.get().then(doc => {
                     let data = doc.data()
+                    let chapters = []
 
                     if (data.chapters) {
                         chapters = data.chapters
+                        
                     } 
 
                     chapters.push({title: title})
@@ -40,8 +43,10 @@
                 })
                 break
             case 'section':
+                docRef = db.collection("courses").doc(course)
                 docRef.get().then(doc => {
                     let data = doc.data()
+                    let sections = []
 
                     chapters = data.chapters
 
