@@ -68,7 +68,7 @@
 <style>
     article {
         width: 100%;
-        max-width: 40rem;
+        max-width: 45rem;
         margin-bottom: 5rem;
         padding: 0 1rem;
     }
@@ -80,7 +80,7 @@
         padding-bottom: 1rem;
         margin-bottom: 1rem;
         width: 100%;
-        border-bottom: 1px #3f3e3c solid;
+        border-bottom: 1px #d6d9dc solid;
     }
 
     .date {
