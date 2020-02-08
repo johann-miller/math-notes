@@ -39,12 +39,12 @@
 
 <li class="chapter">
     <button class="course-title" on:click={() => {expand = !expand}}>
-        <span>{course.content.title}</span>
+        <span>{course.data.title}</span>
         <img src="images/arrow-right.svg" alt="arrow" class:expand>
     </button>
     {#if expand}
         <ol class="chapters">
-            {#each course.content.chapters as chapter, index}
+            {#each course.data.chapters as chapter, index}
                 <Chapter chapter = {chapter} index = {index} />
             {/each}
         </ol>

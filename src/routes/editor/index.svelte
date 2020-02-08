@@ -9,68 +9,7 @@
     let post = ""
     let closed = false
     let db
-    let courses = [
-        {
-            id: "abc123",
-            content: {
-                title: "Algebra",
-                chapters: [
-                    {
-                        title: "Groups",
-                        sections: [
-                            {
-                                title: "Axioms for groups",
-                                postID: "test"
-                            },
-                            {
-                                title: "The dihedral groups",
-                                postID: "test"
-                            }
-                        ]
-                    },
-                    {
-                        title: "Rings",
-                        sections: [
-                            {
-                                title: "Quotient rings",
-                                postID: "test"
-                            }
-                        ]
-                    }
-                ]
-            }
-        },
-        {
-            id: "abc123",
-            content: {
-                title: "Analysis",
-                chapters: [
-                    {
-                        title: "The real numbers",
-                        sections: [
-                            {
-                                title: "Axioms",
-                                postID: "test"
-                            },
-                            {
-                                title: "The least upper bound property",
-                                postID: "test"
-                            }
-                        ]
-                    },
-                    {
-                        title: "Topology",
-                        sections: [
-                            {
-                                title: "Continuous functions",
-                                postID: "test"
-                            }
-                        ]
-                    }
-                ]
-            }
-        }
-    ]
+    let courses = []
 
     editorBody.subscribe(value => {
         body = value
@@ -94,8 +33,20 @@
         }
     }
 
+    function getCourses() {
+        db.collection('courses').get().then(querySnapshot => {
+            querySnapshot.forEach(doc => {
+                let course = {id: doc.id, data: doc.data()}
+                courses.push(course)
+            })
+
+            courses = courses
+        })
+    }
+
     onMount(() => {
         db = firebase.firestore()
+        getCourses()
     })
 </script>
 
@@ -160,11 +111,11 @@
             <span>Sections</span>
         </button>
         <button class="toolbar-button" on:click={save}>
+            <img src="images/save.svg" alt="save">
+            <span>Save</span>
             {#await saving}
                 <img src="images/loading.svg" alt="saving">
             {/await}
-            <img src="images/save.svg" alt="save">
-            <span>Save</span>
         </button>
         <button class="toolbar-button">
             <img src="images/ok.svg" alt="checkmark">

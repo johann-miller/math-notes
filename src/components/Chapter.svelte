@@ -31,8 +31,10 @@
         <span class="index">{index + 1}</span><span>{chapter.title}</span>
     </div>
     <ol>
-        {#each chapter.sections as section, index}
-            <Section section = {section} index = {index} />
-        {/each}
+        {#if chapter.sections}
+            {#each chapter.sections as section, index}
+                <Section section = {section} index = {index} />
+            {/each}
+        {/if}
     </ol>
 </li>
