@@ -1,7 +1,9 @@
 <script>
     import { onMount } from 'svelte'
     import Course from '../../components/Course.svelte'
+    import Editor from '../../components/Editor.svelte'
 
+    let closed = false
     let db
     let courses = [
         {
@@ -45,26 +47,72 @@
     .container {
         border-top: 1px #d6d9dc solid;
         display: grid;
-        grid-template-rows: auto;
-        grid-template-columns: 20rem auto;
+        grid-template-rows: 2.5rem auto;
+        grid-template-columns: auto 1fr;
+        grid-template-areas:
+            "toolbar toolbar"
+            "sidebar editor";
         width: 100%;
         height: calc(100vh - 3rem);
     }
 
     .editor {
+        background: #fcfcfc;
         display: flex;
-        justify-content: center;
-        align-items: center;
+        flex-flow: column;
+        justify-items: start;
+        justify-self: stretch;
+        align-items: start;
         width: 100%;
+        grid-area: editor;
     }
 
     .sidebar {
         border-right: 1px #d6d9dc solid;
-        width: 100%;
+        width: 20rem;
+        transition: 0.2s all ease-in-out;
+        grid-area: sidebar;
+    }
+
+    .toolbar {
+        display: flex;
+        border-bottom: 1px #d6d9dc solid;
+        grid-area: toolbar;
+        width: 100vw;
+    }
+
+    .toolbar-button {
+        background: none;
+        border: none;
+        border-radius: 0;
+        border-right: 1px #d6d9dc solid;
+        height: 100%;
+    }
+
+    .toolbar-button img {
+        height: 1.5rem;
+        width: 1.5rem;
+        margin-right: 0.5rem;
+        filter: invert(20%) sepia(7%) saturate(259%) hue-rotate(2deg) brightness(100%) contrast(85%);
     }
 </style>
 
 <div class="container">
+    <div class="toolbar">
+        <button class="toolbar-button" on:click={() => {closed = !closed}}>
+            <img src="images/si-sprite.svg" alt="list">
+            <span>Sections</span>
+        </button>
+        <button class="toolbar-button">
+            <img src="images/save.svg" alt="save">
+            <span>Save</span>
+        </button>
+        <button class="toolbar-button">
+            <img src="images/ok.svg" alt="checkmark">
+            <span>Publish</span>
+        </button>
+    </div>
+    {#if !closed}
     <div class="sidebar">
         <ul>
             {#each courses as course}
@@ -72,8 +120,9 @@
             {/each}
         </ul>
     </div>
+    {/if}
     <div class="editor">
-        <span>Select a section to edit</span>
+        <Editor />
     </div>
 </div>
 
