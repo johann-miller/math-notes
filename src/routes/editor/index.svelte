@@ -1,10 +1,12 @@
 <script>
     import { onMount } from 'svelte'
     import Course from '../../components/Course.svelte'
+    import CreateCourse from '../../components/CreateCourse.svelte'
     import Editor from '../../components/Editor.svelte'
     import {postID, editorBody} from '../../store/post.js'
 
     let saving
+    let title = ""
     let body = ""
     let post = ""
     let closed = false
@@ -89,6 +91,8 @@
     }
 
     .toolbar-button {
+        display: flex;
+        align-items: center;
         background: none;
         border: none;
         border-radius: 0;
@@ -125,6 +129,7 @@
     {#if !closed}
     <div class="sidebar">
         <ul>
+            <CreateCourse />
             {#each courses as course}
                 <Course course = {course} />
             {/each}

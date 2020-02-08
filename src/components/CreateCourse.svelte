@@ -1,7 +1,5 @@
 <script>
-    import Chapter from "./Chapter.svelte"
-
-    export let course
+    let course = {data: {title: "New course"}}
     let expand = false
 </script>
 
@@ -27,28 +25,11 @@
         filter: invert(20%) sepia(7%) saturate(259%) hue-rotate(2deg) brightness(100%) contrast(85%);
         transition: 0.1s transform ease-in-out;
     }
-
-    .chapters {
-        background: #eeeff1;
-    }
-
-    .expand {
-        transform: rotate(90deg);
-    }
 </style>
 
 <li class="chapter">
-    <button class="course-title" on:click={() => {expand = !expand}}>
+    <button class="course-title" on:click={() => {}}>
         <span>{course.data.title}</span>
-        <img src="images/arrow-right.svg" alt="arrow" class:expand>
+        <img src="images/plus.svg" alt="plus">
     </button>
-    {#if expand}
-        <ol class="chapters">
-            {#if (course.data.chapters != null) }
-                {#each course.data.chapters as chapter, index}
-                    <Chapter chapter = {chapter} index = {index} />
-                {/each}
-            {/if}
-        </ol>
-    {/if}
 </li>
