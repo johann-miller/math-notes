@@ -7,21 +7,23 @@
         margin-right: 0.75rem;
     }
 
-    .section {
-        background: #d6d7d8;
-    }
-
     .section button {
+        display: flex;
+        align-items: flex-start;
         background: none;
         border-radius: 0;
         border: none;
         padding: 1rem 1rem 1rem 3rem;
         width: 100%
     }
+
+    .title {
+        text-align: left;
+    }
 </style>
 
 <li class="section">
     <button>
-        <span class="index">{index + 1}</span><span>{section.title}</span>
+        <span class="index">{index + 1}</span><span class="title">{section.title}</span>
     </button>
 </li>

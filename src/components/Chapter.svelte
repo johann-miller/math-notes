@@ -6,16 +6,19 @@
 
 <style>
     .chapter {
-        background: #eeeff1;
         width: 100%;
     }
 
-    .chapter button {
+    .chapter:not(:last-child) {
+        border-bottom: 1px #d6d9dc solid;
+    }
+
+    .chapter-title {
+        display: flex;
+        align-items: flex-start;
         border: none;
-        background: none;
-        padding: 1rem 1rem 1rem 2rem;
+        padding: 0.5rem 0.5rem 0.5rem 2rem;
         width: 100%;
-        border-radius: 0;
     }
 
     .index {
@@ -24,9 +27,9 @@
 </style>
 
 <li class="chapter">
-    <button>
+    <div class="chapter-title">
         <span class="index">{index + 1}</span><span>{chapter.title}</span>
-    </button>
+    </div>
     <ol>
         {#each chapter.sections as section, index}
             <Section section = {section} index = {index} />
