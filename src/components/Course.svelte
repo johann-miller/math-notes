@@ -2,7 +2,7 @@
     import Chapter from "./Chapter.svelte"
 
     export let course
-    let expand = true
+    let expand = false
 </script>
 
 <style>

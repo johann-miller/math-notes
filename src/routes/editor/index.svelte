@@ -2,7 +2,11 @@
     import { onMount } from 'svelte'
     import Course from '../../components/Course.svelte'
     import Editor from '../../components/Editor.svelte'
+    import {postID, editorBody} from '../../store/post.js'
 
+    let saving
+    let body = ""
+    let post = ""
     let closed = false
     let db
     let courses = [
@@ -67,6 +71,28 @@
             }
         }
     ]
+
+    editorBody.subscribe(value => {
+        body = value
+    })
+
+    postID.subscribe(value => {
+        post = value
+    })
+
+    function save() {
+        saving = savePost()
+    }
+
+    async function savePost() {
+        let res = await db.collection('posts').doc(post).set({
+            body: body
+        }, { merge: true })
+
+        if (res.ok) {
+            return true
+        }
+    }
 
     onMount(() => {
         db = firebase.firestore()
@@ -133,7 +159,10 @@
             <img src="images/si-sprite.svg" alt="list">
             <span>Sections</span>
         </button>
-        <button class="toolbar-button">
+        <button class="toolbar-button" on:click={save}>
+            {#await saving}
+                <img src="images/loading.svg" alt="saving">
+            {/await}
             <img src="images/save.svg" alt="save">
             <span>Save</span>
         </button>
@@ -155,4 +184,3 @@
         <Editor />
     </div>
 </div>
-

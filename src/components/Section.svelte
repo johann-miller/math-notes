@@ -1,5 +1,11 @@
 <script>
+    import {postID} from "./../store/post.js"
+
     export let section, index
+
+    function selectSection() {
+        postID.set(section.postID)
+    }
 </script>
 
 <style>
@@ -23,7 +29,7 @@
 </style>
 
 <li class="section">
-    <button>
+    <button on:click={selectSection}>
         <span class="index">{index + 1}</span><span class="title">{section.title}</span>
     </button>
 </li>

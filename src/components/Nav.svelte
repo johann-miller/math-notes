@@ -28,7 +28,7 @@
 		justify-content: start;
 		list-style-type: none;
 		max-width: 60rem;
-		margin-left: 3rem;
+		margin-left: 1rem;
 		width: 100%;
 	}
 

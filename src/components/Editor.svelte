@@ -1,17 +1,24 @@
 <script>
     import { stores } from "@sapper/app"
+    import {postID, editorBody} from "./../store/post.js"
     import { onMount, afterUpdate } from "svelte"
 
     const { page } = stores()
-    const { slug } = $page.params
-    let db, post
+    let db
     let sectionSelected = false
     let input = ""
     let idleInput
+
+    postID.subscribe(postID => {
+        if (postID != null) {
+            selectSection(postID)
+        }
+    })
     
     function inputChange() {
         clearTimeout(idleInput);
         idleInput = setTimeout(updateOutput, 750);
+        editorBody.set(input)
     }
 
     function updateOutput() {
@@ -22,11 +29,11 @@
         }
     }
 
-    function selectSection(slug) {
+    function selectSection(postID) {
         sectionSelected = true
 
         db = firebase.firestore()
-        db.collection('posts').doc(slug).get().then(doc => {
+        db.collection('posts').doc(postID).get().then(doc => {
             let data = doc.data()
             input = data.body
 
@@ -34,12 +41,7 @@
         })
     }
 
-    function save() {
-        db = firebase.firestore()
-        db.collection('posts').doc(slug).set({
-            body: input
-        }, { merge: true })
-    }
+    
 
     onMount(() => {
         if (window.MathJax) {
@@ -57,8 +59,6 @@
                 }
             });
         }
-
-        //selectSection(slug)
     });
 </script>
 
