@@ -37,6 +37,8 @@
 
     function getCourses() {
         db.collection('courses').get().then(querySnapshot => {
+            courses = []
+            
             querySnapshot.forEach(doc => {
                 let course = {id: doc.id, data: doc.data()}
                 courses.push(course)
@@ -129,9 +131,9 @@
     {#if !closed}
     <div class="sidebar">
         <ul>
-            <CreateCourse />
+            <CreateCourse on:courseCreated={getCourses} />
             {#each courses as course}
-                <Course course = {course} />
+                <Course course = {course} on:courseEdited={getCourses} />
             {/each}
         </ul>
     </div>
