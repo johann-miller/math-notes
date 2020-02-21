@@ -68,7 +68,6 @@
     }
 
     .editor {
-        background: #fcfcfc;
         display: flex;
         flex-flow: column;
         justify-items: start;

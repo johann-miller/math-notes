@@ -1,10 +1,11 @@
 <script>
     import { createEventDispatcher } from 'svelte'
+    import Confirmation from './Confirmation.svelte'
     import Chapter from "./Chapter.svelte"
 
     export let course
     const dispatch = createEventDispatcher()
-    let expand, editing = false
+    let expand, editing, confirmDeletion = false
     let input = ""
 
     function editCourse(value) {
@@ -16,6 +17,15 @@
             dispatch('courseEdited')
             editing = false
             input = ""
+        })
+    }
+
+    function deleteCourse() {
+        let db = firebase.firestore()
+        db.collection('courses').doc(course.id).delete()
+        .then(() => {
+            editing = false
+            dispatch('courseEdited')
         })
     }
 </script>
@@ -135,12 +145,15 @@
                 </button>
             </div>
             <div class="editing-actions">
-                <button>
+                <button on:click={() => {editing = false}}>
                     <span>Cancel</span>
                 </button>
-                <button>
+                <button on:click={() => {confirmDeletion = true}}>
                     <span>Delete</span>
                 </button>
+                {#if confirmDeletion}
+                    <Confirmation title={course.data.title} on:cancel={() => {confirmDeletion = false}} on:confirm={() => {deleteCourse()}} />
+                {/if}
             </div>
         </div>
     {/if}

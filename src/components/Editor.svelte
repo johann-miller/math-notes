@@ -93,6 +93,7 @@
     }
 
     #math-input {
+        background: none;
         flex-grow: 1;
         border: none;
         font-family: "Roboto", sans-serif;
